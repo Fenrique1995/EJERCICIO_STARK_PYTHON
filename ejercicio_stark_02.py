@@ -2,8 +2,12 @@ from data_stark import lista_personajes
 from funciones import *
 
 while True:
-    letra = input('ingrese 1)')
+    seguro = ["A","B","C","D","E","F","G","H","I","J","Z"]
+    letra = input('ingrese (A,B,C,D,E,F,G,H,I,J,Z)\n')
     opcion = letra.upper()
+    while opcion != seguro[0] and opcion != seguro[1] and opcion != seguro[2] and opcion != seguro[3] and opcion != seguro[4] and opcion != seguro[5] and opcion != seguro[6] and opcion != seguro[7] and opcion != seguro[8] and opcion != seguro[9] and opcion != seguro[10]:
+        letra = input('Debe ingresar (A,B,C,D,E,F,G,H,I,J,Z)\n')
+        opcion = letra.upper()
     match opcion:
         case "A":
             heroes_nb(lista_personajes)
