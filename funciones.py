@@ -142,6 +142,7 @@ def color_de_ojos(lista):
     conteo_colores_ojos = {}
 
     for heroe in lista:
+        heroe["color_ojos"] = heroe["color_ojos"].upper()
         color_ojos = heroe["color_ojos"]
         if color_ojos in conteo_colores_ojos:
             conteo_colores_ojos[color_ojos] += 1
@@ -156,11 +157,13 @@ def color_de_pelo(lista):
     conteo_colores_pelo = {}
 
     for heroe in lista:
-        color_pelo = heroe["color_pelo"]
-        if color_pelo in conteo_colores_pelo:
-            conteo_colores_pelo[color_pelo] += 1
-        else:
-            conteo_colores_pelo[color_pelo] = 1
+        if heroe['color_pelo'] != "":
+            heroe['color_pelo'] = heroe['color_pelo'].upper()
+            color_pelo = heroe["color_pelo"]
+            if color_pelo in conteo_colores_pelo:
+                conteo_colores_pelo[color_pelo] += 1
+            else:
+                conteo_colores_pelo[color_pelo] = 1
 
     for color_pelo, cantidad in conteo_colores_pelo.items():
         print(f"Hay {cantidad} superhéroes con cabello de color {color_pelo}.")
@@ -170,7 +173,7 @@ def lista_por_color_de_ojos(lista):
     superheroes_por_color = {}
 
     for heroe in lista:
-        color_ojos = heroe["color_ojos"]
+        color_ojos = heroe["color_ojos"].upper()
         nombre = heroe["nombre"]
         if color_ojos in superheroes_por_color:
             superheroes_por_color[color_ojos].append(nombre)
@@ -279,10 +282,10 @@ def obtener_nombre_y_dato(lista, atributo):
     
     dato = obtener_dato(lista_copiada, atributo)
     for nombre, clave in zip(nombres, dato):
-        mensaje_01 ="Nombre: "+nombre.get('nombre')
-        mensaje_02 =" | "+ atributo+": "+clave[atributo]
+            mensaje_01 ="Nombre: "+nombre.get('nombre')
+            mensaje_02 =" | "+ atributo+": "+clave[atributo]
+            print(mensaje_01+mensaje_02)
 
-        print(mensaje_01+mensaje_02)
 
 """
 3.1 Crear la función “obtener_maximo()” la cual recibirá como parámetro una lista y una key (string) la cual representará el dato al cual se le debe calcular su cantidad MÁXIMA.
@@ -400,3 +403,67 @@ def dividir(dividendo, divisor):
         return resultado
     else:
         return False
+
+"""
+4.3 Crear la función ‘calcular_promedio’ la cual recibirá como parámetro una lista de héroes y un string que representa el dato del héroe que se requiere calcular el promedio. La función debe retornar el promedio del dato pasado por parámetro
+"""
+
+def calcular_promedio(lista, atributo):
+    lista_copiada = copy.deepcopy(lista)
+    suma_de_todo = sumar_dato_heroe(lista_copiada, atributo)
+    contador = 0
+    promedio = 0
+    for heroe in lista_copiada:
+        contador += 1
+        if not isinstance(heroe[atributo], (float, int)):
+            heroe["altura"] = math.floor(float(heroe[atributo]))
+            heroe["peso"] = round(float(heroe[atributo]))
+            heroe["fuerza"] = int(heroe[atributo])
+    promedio = round(suma_de_todo/contador)
+    return promedio
+
+"""
+4.4 Crear la función ‘mostrar_promedio_dato’ la cual recibirá como parámetro una lista de héroes y un string que representa la clave del dato
+    • Se debe validar que el dato que se encuentra en esa clave sea de tipo int o float. Caso contrario retornaria False
+    • Se debe validar que la lista a manipular no esté vacía , en caso de que esté vacía se retornaria también False
+"""
+
+def mostrar_promedio_dato(lista, dato):
+    lista_copiada = copy.deepcopy(lista)
+    el_promedio = calcular_promedio(lista_copiada, dato)
+    for heroe in lista_copiada:
+        if not isinstance(heroe[dato], (float, int)):
+            heroe["altura"] = math.floor(float(heroe[dato]))
+            heroe["peso"] = round(float(heroe[dato]))
+            heroe["fuerza"] = int(heroe[dato])
+        else:
+            return False
+    mensaje = "El promedio de "+dato+" es: "+str(el_promedio)
+    print(mensaje)
+
+"""
+5.1 Crear la función "imprimir_menu" que imprima el menú de opciones por pantalla, el cual permite utilizar toda la funcionalidad ya programada.
+"""
+
+def imprimir_menu():
+    menu = input('el menu: \n ingrese:\n1-Normalizar datos\n2-Recorrer la lista imprimiendo por consola el nombre de cada superhéroe de género NB\n3-Recorrer la lista y determinar cuál es el superhéroe más alto de género F\n4-Recorrer la lista y determinar cuál es el superhéroe más alto de género M\n5-Recorrer la lista y determinar cuál es el superhéroe más débil de género M \n6-Recorrer la lista y determinar cuál es el superhéroe más débil de género NB\n7-Recorrer la lista y determinar la fuerza promedio de los  superhéroes de género NB\n8-Determinar cuántos superhéroes tienen cada tipo de color de ojos\n9-Determinar cuántos superhéroes tienen cada tipo de color de pelo\n10-Listar todos los superhéroes agrupados por color de ojos\n11-Listar todos los superhéroes agrupados por tipo de inteligencia\n')
+    return menu
+
+"""
+5.2 Crear la función “validar_entero” la cual recibirá por parámetro un string de número el cual deberá verificar que sea sea un string conformado únicamente por dígitos. Retornara True en caso de serlo, False caso contrario
+"""
+
+def validar_entero(numero):
+    if numero.isdigit():
+        return True
+    else:
+        return False
+
+"""
+5.3 Crear la función 'stark_menu_principal' la cual se encargará de imprimir el menú de opciones y le pedirá al usuario que ingrese el número de una de las opciones elegidas y deberá validarlo. En caso de ser correcto dicho número, lo retornara casteado a int , caso contrario retorna False. Reutilizar las funciones del ejercicio 5.1 y 5.2
+"""
+
+def stark_menu_principal():
+    digito = imprimir_menu()
+    validar_entero(digito)
+    return digito
