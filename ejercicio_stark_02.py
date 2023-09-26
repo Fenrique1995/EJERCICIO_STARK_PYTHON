@@ -3,7 +3,7 @@ from funciones import *
 
 while True:
     seguro = ["A","B","C","D","E","F","G","H","I","J","Z"]
-    letra = input('ingrese (A,B,C,D,E,F,G,H,I,J,Z)\n')
+    letra = input('ingrese \nA.heroes no binarios\nB.heroina mas alta\nC.heroe mas alto\nD.heroe masculino mas debil\nE.heroe no binario mas debil\nF.el promedio de la fuerza de los heroes no binarios\nG.cantidad y tipo de ojos\nH.cantidad y tipo de cabellos\nI.listado por color de ojos\nJ.lista por tipo de inteligencia\nZ)salir\n')
     opcion = letra.upper()
     while opcion != seguro[0] and opcion != seguro[1] and opcion != seguro[2] and opcion != seguro[3] and opcion != seguro[4] and opcion != seguro[5] and opcion != seguro[6] and opcion != seguro[7] and opcion != seguro[8] and opcion != seguro[9] and opcion != seguro[10]:
         letra = input('Debe ingresar (A,B,C,D,E,F,G,H,I,J,Z)\n')

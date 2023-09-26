@@ -17,13 +17,13 @@ while True:
             datos = stark_normalizar_datos(lista_personajes)
             respuesta(datos)
         #B.Recorrer la lista imprimiendo por consola el nombre de cada superhéroe de género NB
-        case '4':
+        case '2':
             heroes_nb(lista_personajes)
         #C.Recorrer la lista y determinar cuál es el superhéroe más alto de género F
-        case '2':
+        case '3':
             heroina_mas_alta(lista_personajes)
         #D.Recorrer la lista y determinar cuál es el superhéroe más alto de género M
-        case '3':
+        case '4':
             heroe_mas_alto(lista_personajes)
         #E.Recorrer la lista y determinar cuál es el superhéroe más débil de género M 
         case '5':
