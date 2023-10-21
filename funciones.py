@@ -1,4 +1,4 @@
-import math, copy
+import math, copy, re
 # A.Recorrer la lista imprimiendo por consola todos los datos de cada superhéroe
 def recorrer_todo(lista):
     for i in lista:
@@ -398,11 +398,9 @@ def sumar_dato_heroe(lista, clave):
 4.2 Crear la función  ‘dividir’ la cual recibirá como parámetro dos números (dividendo y divisor). Se debe verificar si el divisor es 0,  en caso de serlo, retornar False, caso contrario realizar la división entre los parámetros y retornar el resultado
 """
 def dividir(dividendo, divisor):
-    if divisor > 0:
-        resultado = round(dividendo / divisor)
-        return resultado
-    else:
-        return False
+    if divisor > 0: 
+        return round(dividendo / divisor)
+    return False
 
 """
 4.3 Crear la función ‘calcular_promedio’ la cual recibirá como parámetro una lista de héroes y un string que representa el dato del héroe que se requiere calcular el promedio. La función debe retornar el promedio del dato pasado por parámetro
@@ -467,3 +465,451 @@ def stark_menu_principal():
     digito = imprimir_menu()
     validar_entero(digito)
     return digito
+
+
+
+##############Ejercicio Stark 4###############
+"""
+1.1. Crear la función ‘extraer_iniciales’ que recibirá como parámetro: 
+    • nombre_heroe: un string con el nombre del personaje
+La función deberá devolver a partir del parámetro recibido un nuevo string con las iniciales del nombre del personaje seguidos por un punto (.)
+    • En el caso que el nombre del personaje contenga el artículo ‘the’ se deberá omitir de las iniciales
+    • Se deberá verificar si el nombre contiene un guión ‘-’ y sólo en el caso que lo tenga se deberá reemplazar por un espacio en blanco
+La función deberá validar:
+    • Que el string recibido no se encuentre vacío
+Devolver ‘N/A’ en caso de no cumplirse la validación
+
+Ejemplo de la salida de la función para Howard the Duck:
+H.D.
+ATENCIÓN: Usar regex
+"""
+def extraer_iniciales(input_str):
+    name_filtered = re.sub('-', ' ', input_str)
+    match = re.findall(r'\b(?!the)\w', name_filtered, re.IGNORECASE)
+    if match:
+        initial = '.'.join(match)+"."
+    else:
+        return 'N/A'
+    return initial
+"""
+1.2. Crear la función obtener_dato_formato’ la cual recibirá como parámetro:
+    • dato: un string con un dato especifico
+La función deberá convertir el dato pasado a minúsculas y con formato snake_case 
+por ejemplo: Howard the Duck -> howard_the_duck
+La función deberá validar:
+    • Que el dato recibido sea del tipo str
+En caso de encontrar algún error retornar False, caso contrario el nombre con el formato especificado
+ATENCIÓN: Usar regex
+"""
+def obtener_dato_formato(input_str):
+    if not isinstance(input_str, str):
+        return False
+
+    snake_case_str = re.sub(r'[^a-zA-Z0-9]+', '_', input_str)
+
+    snake_case_str = snake_case_str.lower()
+
+    snake_case_str = snake_case_str.strip('_')
+
+    return snake_case_str
+"""
+1.3. Crear la función ‘stark_imprimir_nombre_con_iniciales’ la cual recibirá como parámetro:
+    • nombre_heroe: un string con el nombre del personaje
+	Se deberá validar:
+    • Que el dato recibido sea del tipo diccionario
+    • Que el  diccionario contengan la clave ‘nombre’  
+La función deberá imprimir el dato en cuestión con el siguiente formato
+Delante de cada nombre se deberá agregar un asterisco ‘*’ (de forma de viñeta) seguido de un espacio.
+Si el superhéroe es Howard the Duck se deberá mostrar 
+* howard_the_duck (H.W.)
+La función deberá devolver True en caso de haber finalizado con éxito o False en caso de que haya ocurrido un error
+"""
+def stark_imprimir_nombre_con_iniciales(input_str):
+    if isinstance(input_str, dict) and 'nombre' in input_str:
+        name = input_str['nombre']
+        format_name_lower_case = obtener_dato_formato(name)
+        initials = extraer_iniciales(name)
+
+        return f"{format_name_lower_case} ({initials})"
+    return False
+"""
+1.4 Crear la función ‘stark_imprimir_nombres_con_iniciales’  la cual recibirá como parámetro:
+    • lista_heroes: la lista de personajes
+La función deberá utilizar la función anterior 
+Luego deberá imprimir la lista completa de los nombres de los personajes con el mismo formato de la anterior
+	Se deberá validar:
+    • Que lista_heroes sea del tipo lista
+    • Que la lista contenga al menos un elemento
+	La función retornara True si salió todo bien y False si ocurrió algún error
+"""
+def stark_imprimir_nombres_con_iniciales(lista):
+    if not isinstance(lista, list):
+        return False
+    if not lista:
+        return False
+    for subject in lista:
+        if not isinstance(subject, dict):
+            return False
+        if 'nombre' not in subject:
+            return False
+        print(stark_imprimir_nombre_con_iniciales(subject))
+"""
+2.1. Crear la función ‘generar_codigo_heroe’ la cual recibirá como parámetro:
+    • diccionario de un héroe
+    • id (int)
+La función deberá generar un string con el siguiente formato:
+    GENERO-X00…000ID
+Es decir, el género recibido por parámetro seguido de un ‘-’ (guión) y por último el identificador recibido.  Todos los códigos generados deben tener como máximo 10 caracteres (contando todos los caracteres, inclusive el guión). Se deberá completar con ceros para que todos queden del mismo largo.
+Dependiendo del género el primer número del código variará
+En caso de que sea un superhéroe de género M -> el código comenzará en 1
+En caso de que sea un superhéroe de género F-> el código comenzará en 2
+En caso de que sea un superhéroe de género NB-> el código comenzará en 0
+Algunos ejemplos:
+    F-20000001 (10 caracteres)
+	M-10000002 (10 caracteres)
+	NB-0000010 (10 caracteres)
+La función deberá validar:
+    • El género no se encuentre vacío y este dentro de los valores esperados (‘M’,  ‘F’ o ‘NB’)
+En caso de no pasar las validaciones retornar ‘N/A’. En caso de verificarse correctamente retornar el código generado.
+"""
+def generar_codigo_heroe(heroe, id):
+    genero = heroe['genero'].upper()
+    
+    # Define un patrón de regex para validar el género y extraer el primer número
+    patron = r'^(M|F|NB)$'
+    match = re.match(patron, genero)
+    
+    if match:
+        genero_valido = match.group(1)
+        primer_numero = '1' if genero_valido == 'M' else '2' if genero_valido == 'F' else '0'
+        
+        # Genera el código con ceros a la izquierda
+        codigo = f"{genero_valido}-{primer_numero}{str(id).zfill(7)}"
+
+        if len(codigo) <= 11:
+            return codigo
+
+    return 'N/A'
+"""
+2.2. Crear la función ‘stark_generar_codigos_heroes’  la cual recibirá como parametro:
+    • lista_heroes: la lista de personajes:
+La función deberá iterar la lista de personajes y generar cada uno de los códigos
+El código del héroe (id_heroe) surge de la posición del mismo dentro de la lista_heroes (comenzando por el 1).
+Reutilizar la función anterior pasándole como argumentos el id_heroe correspondiente
+Guardar en un string cada uno de los heroes con el siguiente formato y al final de toda la iteración debería quedar un mensaje como el siguiente ejemplo
+* howard_the_duck (H.W.) | M-10000001
+* rocket_raccoon (R.R.) | NB-0000002
+		* wolverine (W.) |  M-10000003
+		* black_widow (B.W.) | F-20000004
+………
+Se asignaron ## códigos 
+En donde ## es la cantidad de códigos que se generaron
+La función deberá validar::
+    • La lista contenga al menos un elemento
+    • Todos los elementos de la lista sean del tipo diccionario
+
+	La función retornara la cadena generada si salió todo correctamente y False en caso de error
+"""
+def stark_generar_codigos_heroes(lista_heroes):
+    # Validar que la lista contenga al menos un elemento
+    if not lista_heroes:
+        return False
+
+    # Validar que todos los elementos de la lista sean diccionarios
+    if not all(isinstance(heroe, dict) for heroe in lista_heroes):
+        return False
+    # Generar códigos para cada héroe e imprimirlos
+    resultado = ""
+    contador = 0
+    for i, heroe in enumerate(lista_heroes, start=1):
+        id_heroe = str(i)
+        codigo = generar_codigo_heroe(heroe, id_heroe)
+        nombres = stark_imprimir_nombre_con_iniciales(heroe)
+        if codigo != "N/A":
+            resultado += f"* {nombres} | {codigo}\n"
+            contador += 1
+
+    if contador > 0:
+        print(resultado)
+    else:
+        return False
+"""
+3.1. Crear la función ‘sanitizar_entero’ la cual recibirá como parámetro:
+    • numero_str: un string que representa un posible número entero
+La función deberá analizar el string recibido y determinar si es un número entero positivo.  La función debe devolver distintos valores según el problema encontrado:
+    • Si contiene carácteres no numéricos retornar -1
+    • Si el número es negativo se deberá retornar un -2
+    • Si ocurren otros errores que no permiten convertirlo a entero entonces se deberá retornar -3
+También deberá quitar los espacios en blanco de atras y adelante del string en caso que los tuviese
+En caso que se verifique que el texto contenido en el string es un número entero positivo, retornarlo convertido en entero
+"""
+def sanitizar_entero(numero_str):
+    numero_str = numero_str.strip()
+    patron_numero = r'^\d+$'
+    try:
+        if re.match(patron_numero, numero_str):
+            numero = int(numero_str)
+            if numero >= 0:
+                return numero
+            else:
+                return -2  
+        else:
+            return -1 
+    except ValueError:
+        return -3  
+"""
+3.2. Crear la función ‘sanitizar_flotante’ la cual recibirá como parámetro:
+    • numero_str: un string que representa un posible número decimal
+La función deberá analizar el string recibido y determinar si es un número flotante positivo.  La función debe devolver distintos valores según el problema encontrado:
+    • Si contiene carácteres no numéricos retornar -1
+    • Si el número es negativo se deberá retornar un -2
+    • Si ocurren otros errores que no permiten convertirlo a entero entonces se deberá retornar -3
+También deberá quitar los espacios en blanco de atras y adelante del string en caso que los tuviese
+En caso que se verifique que el texto contenido en el string es un número flotante positivo, retornarlo convertido en flotante
+"""
+def sanitizar_flotante(numero_str):
+    numero_str = numero_str.strip()
+    patron_numero = r'^\d+(\.\d+)?$'
+    try:
+        if re.match(patron_numero, numero_str):
+            numero = float(numero_str)
+            if numero >= 0:
+                return numero
+            else:
+                return -2  
+        else:
+            return -1 
+    except ValueError:
+        return -3  
+"""
+3.3. Crear la función ‘sanitizar_string’’ la cual recibirá como parámetro
+    • valor_str: un string que representa el texto a validar
+    • valor_por_defecto: un string que representa un valor por defecto (parámetro opcional, inicializarlo con ‘-’)
+La función deberá analizar el string recibido y determinar si es solo texto (sin números). En caso de encontrarse números retornar “N/A”
+En el caso que valor_str contenga una barra ‘/’ deberá ser reemplazada por un espacio
+	El espacio es un caracter válido 
+En caso que se verifique que el parámetro recibido es solo texto, se deberá retornar el mismo convertido todo a minúsculas
+En el caso que el texto a validar se encuentre vacío y que nos hayan pasado un valor por defecto, entonces retornar el valor por defecto convertido a minúsculas
+Quitar los espacios en blanco de atras y adelante de ambos parámetros en caso que los tuviese
+"""
+def sanitizar_string(valor_str, valor_por_defecto='-'):
+    valor_str = valor_str.strip()
+    valor_por_defecto = valor_por_defecto.strip()
+    patron_numeros = r'\d+'
+    if re.search(patron_numeros, valor_str):
+        return "N/A"  
+    valor_str = re.sub(r'/', ' ', valor_str)
+    if not valor_str and valor_por_defecto:
+        return valor_por_defecto.lower()
+    if re.match(r'^[A-Za-z\s]+$', valor_str):
+        return valor_str.lower()
+    return "N/A" 
+"""
+3.4. Crear la función ‘sanitizar_dato’ la cual recibirá como parámetros:
+    • heroe: un diccionario con los datos del personaje
+    • clave: un string que representa el dato a sanitizar (la clave del diccionario). Por ejemplo altura
+    • tipo_dato: un string que representa el tipo de dato a sanitizar. Puede tomar los valores: ‘string’, ‘entero’ y ‘flotante’
+La función deberá sanitizar el valor del diccionario correspondiente a la clave y al tipo de dato recibido
+Para sanitizar los valores se deberán utilizar las funciones creadas en los puntos 3.1, 3.2, 3.3 y 3.4
+
+Se deberá validar:
+    • Que tipo_dato se encuentre entre los valores esperados (‘string, ‘entero, ‘flotante)’ la validación debe soportar que nos lleguen mayúsculas o minúsculas. En caso de encontrarse un valor no válido informar por pantalla: ‘Tipo de dato no reconocido’
+
+    • Que clave exista como clave dentro del diccionario heroe. En caso de no encontrarse, informar	 por pantalla: ‘La clave especificada no existe en el héroe’. (en este caso la validación es sensible a mayúsculas o minúsculas) 
+	Ejemplo de llamada a la función válida:
+sanitizar_dato(dict_personaje, “altura”, “Flotante”)
+La función deberá devolver True en caso de haber sanitizado algún dato y False en caso contrario.
+"""
+def sanitizar_dato(lista, clave, tipo_dato):
+    lista_copiada = copy.deepcopy(lista)
+    tipo_dato = tipo_dato.lower()
+    se_realizo_sanitizacion = False
+    for heroe in lista_copiada:
+        if clave in heroe:
+            dato_a_sanitizar = heroe[clave]
+            if tipo_dato == "flotante":
+                heroe[clave] = sanitizar_flotante(dato_a_sanitizar)
+                se_realizo_sanitizacion = True
+            elif tipo_dato == "entero":
+                heroe[clave] = sanitizar_entero(dato_a_sanitizar)
+                se_realizo_sanitizacion = True
+            elif tipo_dato == "string":
+                heroe[clave] = sanitizar_string(dato_a_sanitizar, valor_por_defecto='-')
+                se_realizo_sanitizacion = True
+    
+    if se_realizo_sanitizacion:
+        return heroe[clave]
+    else:
+        print(f'La clave "{clave}" no existe en ningún héroe o el tipo de dato no es válido: "{tipo_dato}"')
+        return False
+"""
+3.5. Crear la función 'stark_normalizar_datos’ la cual recibirá como parámetros:
+    • lista_heroes: la listas personajes
+La función deberá recorrer la lista de héroes y sanitizar los valores solo de las siguientes claves: ‘altura’, ‘peso’, ‘color_ojos’, ‘color_pelo’, ‘fuerza’ e ‘inteligencia’
+    • Un vez finalizado el proceso mostrar el mensaje ‘Datos normalizados’, 
+    • Validar que la lista de héroes no esté vacía para realizar sus acciones, caso contrario imprimirá el mensaje: “Error: Lista de héroes vacía”
+    • La función no retorna nada
+    • Reutilizar la función sanitizar_dato
+"""
+def stark_normalizar_datos(lista):
+    lista_copiada = copy.deepcopy(lista)
+    if len(lista_copiada) > 0:
+        sanitizar_dato(lista_copiada,"altura", "flotante")
+        sanitizar_dato(lista_copiada,"peso", "flotante")
+        sanitizar_dato(lista_copiada,"color_ojos", "string")
+        sanitizar_dato(lista_copiada,"color_pelo", "string")
+        sanitizar_dato(lista_copiada,"fuerza", "entero")
+        sanitizar_dato(lista_copiada,"inteligencia", "entero")
+        print("Datos normalizados")
+"""
+4.1. Crear la función ‘stark_imprimir_indice_nombre’ la cual recibirá como parámetro:
+    • lista_heroes: la lista de personajes
+La función deberá mostrar por pantalla cada una de las palabras de cada uno de los nombres que existan en el data_stark separado por un guion entre cada una de las palabras ignorando las palabras que digan “the” -> (Usar regex)
+Por ejemplo:
+Howard-duck-Rocket-Raccoon-Wolverine…
+Usar alguna de las funciones vistas en la PPT strings
+"""
+def stark_imprimir_indice_nombre(lista):
+    lista_copiada = copy.deepcopy(lista)
+    nombres_concatenados = ""
+    patron_the = r'\bthe\b'
+    for heroe in lista_copiada:
+        if 'nombre' in heroe:
+            nombre = heroe['nombre']
+            nombre_formateado = re.sub(patron_the, '', nombre, flags=re.IGNORECASE)
+            nombre_formateado = re.sub(r'\s+', '-', nombre_formateado).strip('-')
+            nombres_concatenados += nombre_formateado + '-'
+    nombres_concatenados = nombres_concatenados.rstrip('-')
+    print(nombres_concatenados)
+"""
+5.1 Crear la función ‘generar_separador’ la cual recibirá como parámetro
+    • patron: un carácter que se utilizará como patrón para generar el separador
+    • largo: un número que representa la cantidad de caracteres que va ocupar el separador.
+    • imprimir: un parámetro opcional del tipo booleano (por default definir en True) 
+La función deberá generar un string que contenga el patrón especificado repitiendo tantas veces como la cantidad recibida como parámetro (uno junto al otro, sin salto de línea)
+Si el parámetro booleano recibido se encuentra en False se deberá solo retornar el separador generado. Si se encuentra en True antes de retornarlo, imprimirlo por pantalla
+La función deberá validar: 
+    • Que el parámetro patrón tenga al menos un carácter y como máximo dos
+    • Que el parámetro largo sea un entero entre 1 y 235 inclusive
+En caso de no verificarse las validaciones devolver ‘N/A’
+Ejemplo de llamada:
+generar_separador(‘*’, 10)
+Ejemplo de salida:
+**********
+"""
+def generar_separador(patron, largo, imprimir=True):
+    if not (1 <= len(patron) <= 2):
+        return 'N/A'
+    
+    if not (1 <= largo <= 235):
+        return 'N/A'
+
+    separador = patron * largo
+
+    if imprimir:
+        print(separador)
+    else:
+        return separador
+"""
+5.2 Crear la función ‘generar_encabezado’ la cual recibirá como parámetro
+    • titulo: un string que representa el título de una sección de la ficha
+La función deberá devolver un string que contenga el título envuelto entre dos separadores (estimar el largo requerido para tu pantalla). 
+Ejemplo de salida:
+********************************************************************************
+PRINCIPAL
+********************************************************************************
+La función deberá convertir el titulo recibido en todas letras mayúsculas
+"""
+def generar_encabezado(titulo):
+    titulo_mayuscula = titulo.upper()
+    generar_separador('*', 150)
+    print(titulo_mayuscula)
+    generar_separador('*', 150)
+"""
+5.3	Crear la función ‘imprimir_ficha_heroe’ la cual recibirá como parámetro:
+    • heroe: un diccionario con los datos del héroe
+La función deberá a partir los datos del héroe generar un string con el siguiente formato e imprimirlo por pantalla::
+***************************************************************************************
+PRINCIPAL
+***************************************************************************************
+NOMBRE DEL HÉROE: 			spider_man (S.M.)
+IDENTIDAD SECRETA:			peter_parker
+CONSULTORA:				marverl_comics
+CÓDIGO DE HÉROE	:			M-10000001
+***************************************************************************************
+FISICO
+***************************************************************************************
+ALTURA: 					178 cm.
+PESO:						74,25 kg.
+FUERZA: 					55 N
+***************************************************************************************
+SEÑAS PARTICULARES
+***************************************************************************************
+	COLOR DE OJOS:				Hazel
+	COLOR DE PELO:				Brown
+
+Recordatorio: Se pueden usar índices negativos si desean
+"""
+def imprimir_ficha_heroe(heroe):
+    if isinstance(heroe, dict):
+        heroe_nombre = obtener_dato_formato(heroe['nombre'])
+        heroe_iniciales = extraer_iniciales(heroe['nombre'])
+        heroe_identidad = obtener_dato_formato(heroe['identidad'])
+        heroe_consultora = obtener_dato_formato(heroe['empresa'])
+        heroe_codigo = generar_codigo_heroe(heroe, 1)
+        heroe_altura = sanitizar_flotante(heroe['altura'])
+        heroe_peso = sanitizar_flotante(heroe['peso'])
+        generar_encabezado("principal")
+        print("NOMBRE DEL HÉROE: 			"+heroe_nombre+f" ({heroe_iniciales})")
+        print("IDENTIDAD SECRETA:			"+heroe_identidad)
+        print("CONSULTORA:				"+heroe_consultora)
+        print("CÓDIGO DE HÉROE	:			"+heroe_codigo)
+        generar_encabezado("fisico")
+        print("ALTURA: 					"+str(heroe_altura)+" cm.")
+        print("PESO:						"+str(heroe_peso)+" kg.")
+        print("FUERZA: 					"+heroe['fuerza']+" N")
+        generar_encabezado("señas particulares")
+        print("COLOR DE OJOS:				"+heroe['color_ojos'])
+        print("COLOR DE PELO:				"+heroe['color_pelo'])
+"""
+    5.5. Crear la función 'stark_navegar_fichas’ la cual recibirá como parámetros:
+    • lista_heroes: la listas personajes
+La función deberá comenzar imprimiendo la ficha del primer personaje de la lista y luego solicitar al usuario que ingrese alguna de las siguientes opciones:
+[ 1 ] Ir a la izquierda 		[ 2 ] Ir a la derecha 		[ 3 ] Salir
+    • Si el usuario ingresa ‘1’: se debe mostrar el héroe que se encuentra en la posición anterior en la lista  (en caso de estar en el primero, ir al último)
+
+    • Si el usuario ingresa ‘2’:  se debe mostrar el héroe que se encuentra en la posición siguiente en la lista (en caso de estar en el último, ir al primero)
+
+    • Si ingresa 3: volver al menú principal
+
+    • Si ingresa cualquier otro valor, volver a mostrar las opciones hasta que ingrese un valor válido
+"""
+def stark_navegar_fichas(lista_heroes):
+    if not lista_heroes:
+        print("La lista de héroes está vacía.")
+        return
+
+    i = 0
+    catalogo = len(lista_heroes)
+
+    while True:
+        # Imprimir la ficha del héroe en la posición actual
+        imprimir_ficha_heroe(lista_heroes[i])
+
+        # Solicitar al usuario que ingrese una opción
+        opcion = input("Ingresa una opción: [1] Izquierda, [2] Derecha, [3] Salir: ")
+
+        if opcion == '1':
+            # Retroceder en la lista (ir a la izquierda)
+            i -= 1
+            if i < 0:
+                i = catalogo - 1
+        elif opcion == '2':
+            # Avanzar en la lista (ir a la derecha)
+            i += 1
+            if i >= catalogo:
+                i = 0
+        elif opcion == '3':
+            break
+        else:
+            print("Opción no válida. Ingresa '1', '2' o '3'.")
