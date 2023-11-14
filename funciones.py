@@ -910,7 +910,7 @@ def stark_navegar_fichas(lista_heroes):
         else:
             print("Opción no válida. Ingresa '1', '2' o '3'.")
 
-############################Ejercicio Stark 5#############################################
+############################Ejercicio Stark 05#############################################
 """
 1. Primera Parte: Archivos
 1.1. Crear la función 'leer_archivo' la cual recibirá por parámetro un string
@@ -961,17 +961,7 @@ def guardar_archivo(nombre_archivo, contenido):
         print(f"Error al crear el archivo: {nombre_archivo}")
         print(f"Detalle del error: {e}")
     return False
-"""
-nombre_archivo = "nuevo_archivo.txt"
-contenido_a_guardar = "Este es el contenido que se guardará en el archivo."
 
-exito = guardar_archivo(nombre_archivo, contenido_a_guardar)
-
-if exito:
-    print("Guardado exitoso.")
-else:
-    print("Error al intentar guardar el archivo.")
-"""
 
 """
 1.3. Crear la función generar_csv()
@@ -1001,22 +991,6 @@ def generar_csv(nombre_archivo, lista_superheroes):
 
     return exito
 
-"""
-# Ejemplo de uso
-nombre_archivo_csv = "superheroes.csv"
-superheroes = [
-    {"nombre": "Spider-Man", "superpoder": "Sentido arácnido", "anio_creacion": 1962},
-    {"nombre": "Iron Man", "superpoder": "Genio millonario", "anio_creacion": 1963},
-    # Agrega más héroes según sea necesario
-]
-
-exito_generacion = generar_csv(nombre_archivo_csv, superheroes)
-
-if exito_generacion:
-    print(f"Generación y guardado del archivo {nombre_archivo_csv} exitoso.")
-else:
-    print("Error al intentar generar y guardar el archivo CSV.")
-"""
 
 """
 1.4. Crear la función leer_csv() que va a recibir el nombre y extensión de
@@ -1043,19 +1017,6 @@ def leer_csv(nombre_archivo):
         print(f"Error al leer el archivo CSV: {e}")
         return False
 
-"""
-# Ejemplo de uso
-nombre_archivo_csv = "superheroes.csv"
-
-superheroes_leidos = leer_csv(nombre_archivo_csv)
-
-if superheroes_leidos:
-    print("Superhéroes leídos del archivo CSV:")
-    for heroe in superheroes_leidos:
-        print(heroe)
-else:
-    print("No se pudo leer el archivo CSV.")
-"""
 
 """
 1.5. Crear la función generar_json() que va a recibir el nombre y extensión
@@ -1084,20 +1045,6 @@ def generar_json(nombre_archivo, lista_superheroes, nombre_lista):
     except Exception as e:
         print(f"Error al generar el archivo JSON: {e}")
         return False
-
-"""
-    # Ejemplo de uso
-nombre_archivo_json = "superheroes.json"
-nombre_lista = "lista_superheroes"
-
-# Supongamos que tienes una lista de superhéroes llamada superheroes
-superheroes = [
-    {"nombre": "Superman", "poder": "Vuelo", "identidad_secreta": "Clark Kent"},
-    {"nombre": "Batman", "poder": "Inteligencia", "identidad_secreta": "Bruce Wayne"}
-]
-
-generar_json(nombre_archivo_json, superheroes, nombre_lista)
-"""
 
 """
 1.6. Crear la función leer_json() que va a recibir el nombre y extensión de
@@ -1158,26 +1105,6 @@ def ordenar_heroes_ascendentes(lista_superheroes, clave_orden):
         print(f"Error al ordenar por la clave '{clave_orden}'. Asegúrate de que los valores sean numéricos.")
         return None
 
-"""
-# Ejemplo de uso con una lista de superhéroes
-lista_superheroes = [
-    {"nombre": "Spider-Man", "altura": "178.28", "peso": "74.25", "fuerza": "55"},
-    {"nombre": "Iron Man", "altura": "198.91", "peso": "191.88", "fuerza": "85"},
-    {"nombre": "Hulk", "altura": "244.40", "peso": "630.90", "fuerza": "100"}
-]
-
-clave_orden = "altura"
-lista_superheroes_ordenada = ordenar_heroes_ascendentes(lista_superheroes, clave_orden)
-if lista_superheroes_ordenada is not None:
-    print(f"Lista de superhéroes ordenada por '{clave_orden}' de manera ascendente:")
-    for heroe in lista_superheroes_ordenada:
-        print(heroe)
-
-# Imprimir la lista original para verificar que no ha sido alterada
-print("Lista original:")
-for heroe in lista_superheroes:
-    print(heroe)
-"""
 
 """
 2.2. Crear una función para ordenar héroes por alguna de las claves
@@ -1205,24 +1132,6 @@ def ordenar_descendente(lista_superheroes, clave_orden):
     except ValueError:
         print(f"Error al ordenar por la clave '{clave_orden}'. Asegúrate de que los valores sean numéricos.")
         return None
-
-"""
-# Ejemplo de uso:
-lista_superheroes = [
-    {"nombre": "Hulk", "fuerza": 100},
-    {"nombre": "Thor", "fuerza": 90},
-    {"nombre": "Iron Man", "fuerza": 85},
-    # ... más héroes ...
-]
-
-clave_orden = 'fuerza'  # Cambia esto a la clave por la cual deseas ordenar
-
-lista_superheroes_descendente = ordenar_descendente(lista_superheroes, clave_orden)
-if lista_superheroes_descendente is not None:
-    print(f"Lista de superhéroes ordenada por '{clave_orden}' de manera descendente:")
-    for heroe in lista_superheroes_descendente:
-        print(heroe)
-"""
 
 """
 2.3. Crear una función para ordenar héroes por alguna de las claves
