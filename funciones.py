@@ -1,4 +1,4 @@
-import math, copy, re
+import math, copy, re, json, csv
 # A.Recorrer la lista imprimiendo por consola todos los datos de cada superhéroe
 def recorrer_todo(lista):
     for i in lista:
@@ -543,14 +543,10 @@ Luego deberá imprimir la lista completa de los nombres de los personajes con el
 	La función retornara True si salió todo bien y False si ocurrió algún error
 """
 def stark_imprimir_nombres_con_iniciales(lista):
-    if not isinstance(lista, list):
-        return False
-    if not lista:
+    if not isinstance(lista, list) and not lista:
         return False
     for subject in lista:
-        if not isinstance(subject, dict):
-            return False
-        if 'nombre' not in subject:
+        if not isinstance(subject, dict) and 'nombre' not in subject:
             return False
         print(stark_imprimir_nombre_con_iniciales(subject))
 """
@@ -586,7 +582,7 @@ def generar_codigo_heroe(heroe, id):
         # Genera el código con ceros a la izquierda
         codigo = f"{genero_valido}-{primer_numero}{str(id).zfill(7)}"
 
-        if len(codigo) <= 11:
+        if len(primer_numero) < 10:
             return codigo
 
     return 'N/A'
@@ -652,11 +648,11 @@ def sanitizar_entero(numero_str):
             if numero >= 0:
                 return numero
             else:
-                return -2  
+                return False 
         else:
-            return -1 
+            return True
     except ValueError:
-        return -3  
+        return False 
 """
 3.2. Crear la función ‘sanitizar_flotante’ la cual recibirá como parámetro:
     • numero_str: un string que representa un posible número decimal
@@ -760,7 +756,7 @@ def stark_normalizar_datos(lista):
         sanitizar_dato(lista_copiada,"color_pelo", "string")
         sanitizar_dato(lista_copiada,"fuerza", "entero")
         sanitizar_dato(lista_copiada,"inteligencia", "entero")
-        print("Datos normalizados")
+        return lista_copiada
 """
 4.1. Crear la función ‘stark_imprimir_indice_nombre’ la cual recibirá como parámetro:
     • lista_heroes: la lista de personajes
@@ -913,3 +909,362 @@ def stark_navegar_fichas(lista_heroes):
             break
         else:
             print("Opción no válida. Ingresa '1', '2' o '3'.")
+
+############################Ejercicio Stark 5#############################################
+"""
+1. Primera Parte: Archivos
+1.1. Crear la función 'leer_archivo' la cual recibirá por parámetro un string
+que indicará el nombre y extensión del archivo a leer (Ejemplo:
+archivo.json). Dicho archivo se abrirá en modo lectura únicamente y
+retornara un string con la información del mismo.
+ATENCIÓN:Controlar las excepciones posibles en caso de
+presentarse alguna imprimir el mensaje de la misma y retornar
+False
+Usar de Encoding UTF-8
+"""
+def leer_archivo(nombre_archivo):
+    try:
+        with open(nombre_archivo, 'r', encoding='utf-8') as archivo:
+            contenido = archivo.read()
+            return contenido
+    except FileNotFoundError:
+        print(f"Error: El archivo '{nombre_archivo}' no se encontró.")
+    except Exception as e:
+        print(f"Error: {e}")
+    return False
+
+"""
+1.2. Crear la función 'guardar_archivo' la cual recibirá por parámetro un
+string que indicará el nombre con el cual se guardará el archivo junto
+con su extensión (ejemplo: 'archivo.csv') y como segundo parámetro
+tendrá un string el cual será el contenido a guardar en dicho archivo.
+Debe abrirse el archivo en modo escritura+, ya que en caso de no
+existir, lo creara y en caso de existir, lo va a sobreescribir La función
+debera retornar True si no hubo errores, caso contrario False
+(VALIDAR CON EXCEPCIONES), además en caso de éxito, deberá
+imprimir un mensaje respetando el formato:
+Se creó el archivo: nombre_archivo.csv
+ATENCIÓN:Controlar las excepciones posibles en caso de
+presentarse alguna retornar false e imprimir un mensaje que
+diga:: ‘Error al crear el archivo: nombre_archivo’
+Donde nombre_archivo será el nombre que recibirá el archivo a
+ser creado, conjuntamente con su extensión.
+Usar de Encoding UTF-8
+"""
+def guardar_archivo(nombre_archivo, contenido):
+    try:
+        with open(nombre_archivo, 'w+', encoding='utf-8') as archivo:
+            archivo.write(contenido)
+            print(f"Se creó el archivo: {nombre_archivo}")
+            return True
+    except Exception as e:
+        print(f"Error al crear el archivo: {nombre_archivo}")
+        print(f"Detalle del error: {e}")
+    return False
+"""
+nombre_archivo = "nuevo_archivo.txt"
+contenido_a_guardar = "Este es el contenido que se guardará en el archivo."
+
+exito = guardar_archivo(nombre_archivo, contenido_a_guardar)
+
+if exito:
+    print("Guardado exitoso.")
+else:
+    print("Error al intentar guardar el archivo.")
+"""
+
+"""
+1.3. Crear la función generar_csv()
+La función va a recibir el nombre y extensión del archivo csv de los
+superhéroes (Puede ser ruta absoluta o relativa) y la lista de los
+mismos.
+Si la lista no está vacía la función deberá guardar en un string la
+información en formato csv (separado con comas) con la cabecera
+correspondiente.
+Una vez generado el string debería usar la función de 1.2 para guardar
+ese string generado al archivo.
+Si la lista está vacia retornar False
+"""
+def generar_csv(nombre_archivo, lista_superheroes):
+    if not lista_superheroes:
+        print("La lista de superhéroes está vacía.")
+        return False
+
+    # Generar el contenido CSV
+    contenido_csv = "Nombre,Identidad,Empresa,Altura,Peso,Género,Color de Ojos,Color de Pelo,Fuerza,Inteligencia\n"  # Cabecera
+
+    for superheroe in lista_superheroes:
+        contenido_csv += f"{superheroe['nombre']},{superheroe['identidad']},{superheroe['empresa']},{superheroe['altura']},{superheroe['peso']},{superheroe['genero']},{superheroe['color_ojos']},{superheroe['color_pelo']},{superheroe['fuerza']},{superheroe['inteligencia']}\n"
+
+    # Guardar el contenido en el archivo usando la función de 1.2
+    exito = guardar_archivo(nombre_archivo, contenido_csv)
+
+    return exito
+
+"""
+# Ejemplo de uso
+nombre_archivo_csv = "superheroes.csv"
+superheroes = [
+    {"nombre": "Spider-Man", "superpoder": "Sentido arácnido", "anio_creacion": 1962},
+    {"nombre": "Iron Man", "superpoder": "Genio millonario", "anio_creacion": 1963},
+    # Agrega más héroes según sea necesario
+]
+
+exito_generacion = generar_csv(nombre_archivo_csv, superheroes)
+
+if exito_generacion:
+    print(f"Generación y guardado del archivo {nombre_archivo_csv} exitoso.")
+else:
+    print("Error al intentar generar y guardar el archivo CSV.")
+"""
+
+"""
+1.4. Crear la función leer_csv() que va a recibir el nombre y extensión de
+donde se ubica el archivo a leer (Ruta absoluta o relativa)
+La función se tiene que encargar de generar una lista de superhéroes
+en base al contenido de ese archivo csv que se le paso. Pueden usar
+la cabecera de ese csv para generar las claves de cada uno de los
+diccionarios.
+La función debe retornar la lista de diccionarios si es que existe el
+archivo y sino False.    
+"""
+def leer_csv(nombre_archivo):
+    try:
+        with open(nombre_archivo, 'r', encoding='utf-8') as file:
+            csv_reader = csv.DictReader(file)
+            lista_superheroes = [dict(fila) for fila in csv_reader]
+
+        return lista_superheroes
+
+    except FileNotFoundError:
+        print(f"El archivo {nombre_archivo} no fue encontrado.")
+        return False
+    except Exception as e:
+        print(f"Error al leer el archivo CSV: {e}")
+        return False
+
+"""
+# Ejemplo de uso
+nombre_archivo_csv = "superheroes.csv"
+
+superheroes_leidos = leer_csv(nombre_archivo_csv)
+
+if superheroes_leidos:
+    print("Superhéroes leídos del archivo CSV:")
+    for heroe in superheroes_leidos:
+        print(heroe)
+else:
+    print("No se pudo leer el archivo CSV.")
+"""
+
+"""
+1.5. Crear la función generar_json() que va a recibir el nombre y extensión
+de donde se ubica el archivo a guardar (Ruta absoluta o relativa) , la
+lista de los superhéroes y el nombre de la lista.
+Si la lista no está vacía debería guardar en un diccionario de una sóla
+clave la lista de superhéroes,el nombre de clave debería ser la del
+tercer parámetro que sería el nombre de la lista.
+ATENCIÓN:Usar indent=4 al generar el Json
+También tener en cuenta que los datos deben estar normalizados
+antes de generar el json.
+"""
+def generar_json(nombre_archivo, lista_superheroes, nombre_lista):
+    try:
+        if lista_superheroes:
+            datos = {nombre_lista: lista_superheroes}
+
+            with open(nombre_archivo, 'w', encoding='utf-8') as file:
+                json.dump(datos, file, indent=4)
+
+            print(f"Se creó el archivo: {nombre_archivo}")
+            return True
+        else:
+            print("La lista de superhéroes está vacía. No se generó el archivo JSON.")
+            return False
+    except Exception as e:
+        print(f"Error al generar el archivo JSON: {e}")
+        return False
+
+"""
+    # Ejemplo de uso
+nombre_archivo_json = "superheroes.json"
+nombre_lista = "lista_superheroes"
+
+# Supongamos que tienes una lista de superhéroes llamada superheroes
+superheroes = [
+    {"nombre": "Superman", "poder": "Vuelo", "identidad_secreta": "Clark Kent"},
+    {"nombre": "Batman", "poder": "Inteligencia", "identidad_secreta": "Bruce Wayne"}
+]
+
+generar_json(nombre_archivo_json, superheroes, nombre_lista)
+"""
+
+"""
+1.6. Crear la función leer_json() que va a recibir el nombre y extensión de
+donde se ubica el archivo a leer (Ruta absoluta o relativa), y también el
+nombre de la lista a leer por ejemplo en la imagen anterior la lista está
+en la clave “heroes”
+Si el archivo existe deberia leer el archivo json y retornar la lista
+obtenida.
+Si el achivo no existe deberia retornar False (USAR EXCEPCIONES)
+"""
+def leer_json(nombre_archivo, nombre_lista):
+    try:
+        with open(nombre_archivo, 'r', encoding='utf-8') as file:
+            datos = json.load(file)
+
+            if nombre_lista in datos:
+                return datos[nombre_lista]
+            else:
+                print(f"La clave {nombre_lista} no existe en el archivo JSON.")
+                return False
+    except FileNotFoundError:
+        print(f"El archivo {nombre_archivo} no existe.")
+        return False
+    except Exception as e:
+        print(f"Error al leer el archivo JSON: {e}")
+        return False
+
+"""
+2.1. Crear una función para ordenar héroes por alguna de las claves
+númericas (altura, peso y fuerza) de manera ascendente
+"""
+def ordenar_heroes_ascendentes(lista_superheroes, clave_orden):
+    try:
+        # Verificar si la clave de orden existe en al menos un héroe
+        if clave_orden not in lista_superheroes[0]:
+            print(f"La clave de orden '{clave_orden}' no existe en los datos de los superhéroes.")
+            return None
+
+        # Realizar una copia profunda de la lista para no alterar la original
+        lista_superheroes_copia = copy.deepcopy(lista_superheroes)
+
+        # Ordenar la lista de superhéroes copiada por la clave especificada
+        n = len(lista_superheroes_copia)
+        for i in range(n - 1):
+            for j in range(0, n - i - 1):
+                if float(lista_superheroes_copia[j][clave_orden]) > float(lista_superheroes_copia[j + 1][clave_orden]):
+                    lista_superheroes_copia[j], lista_superheroes_copia[j + 1] = (
+                        lista_superheroes_copia[j + 1],
+                        lista_superheroes_copia[j]
+                    )
+
+        return lista_superheroes_copia
+
+    except IndexError:
+        print("La lista de superhéroes está vacía.")
+        return None
+    except ValueError:
+        print(f"Error al ordenar por la clave '{clave_orden}'. Asegúrate de que los valores sean numéricos.")
+        return None
+
+"""
+# Ejemplo de uso con una lista de superhéroes
+lista_superheroes = [
+    {"nombre": "Spider-Man", "altura": "178.28", "peso": "74.25", "fuerza": "55"},
+    {"nombre": "Iron Man", "altura": "198.91", "peso": "191.88", "fuerza": "85"},
+    {"nombre": "Hulk", "altura": "244.40", "peso": "630.90", "fuerza": "100"}
+]
+
+clave_orden = "altura"
+lista_superheroes_ordenada = ordenar_heroes_ascendentes(lista_superheroes, clave_orden)
+if lista_superheroes_ordenada is not None:
+    print(f"Lista de superhéroes ordenada por '{clave_orden}' de manera ascendente:")
+    for heroe in lista_superheroes_ordenada:
+        print(heroe)
+
+# Imprimir la lista original para verificar que no ha sido alterada
+print("Lista original:")
+for heroe in lista_superheroes:
+    print(heroe)
+"""
+
+"""
+2.2. Crear una función para ordenar héroes por alguna de las claves
+númericas (altura, peso y fuerza) de manera descendente.
+"""
+def ordenar_descendente(lista_superheroes, clave_orden):
+    try:
+        # Verificar si la clave de orden existe en al menos un héroe
+        if clave_orden not in lista_superheroes[0]:
+            print(f"La clave de orden '{clave_orden}' no existe en los datos de los superhéroes.")
+            return None
+
+        # Implementación del método de burbujeo descendente
+        n = len(lista_superheroes)
+        for i in range(n - 1):
+            for j in range(0, n - i - 1):
+                if lista_superheroes[j][clave_orden] < lista_superheroes[j + 1][clave_orden]:
+                    lista_superheroes[j], lista_superheroes[j + 1] = lista_superheroes[j + 1], lista_superheroes[j]
+
+        return lista_superheroes
+
+    except IndexError:
+        print("La lista de superhéroes está vacía.")
+        return None
+    except ValueError:
+        print(f"Error al ordenar por la clave '{clave_orden}'. Asegúrate de que los valores sean numéricos.")
+        return None
+
+"""
+# Ejemplo de uso:
+lista_superheroes = [
+    {"nombre": "Hulk", "fuerza": 100},
+    {"nombre": "Thor", "fuerza": 90},
+    {"nombre": "Iron Man", "fuerza": 85},
+    # ... más héroes ...
+]
+
+clave_orden = 'fuerza'  # Cambia esto a la clave por la cual deseas ordenar
+
+lista_superheroes_descendente = ordenar_descendente(lista_superheroes, clave_orden)
+if lista_superheroes_descendente is not None:
+    print(f"Lista de superhéroes ordenada por '{clave_orden}' de manera descendente:")
+    for heroe in lista_superheroes_descendente:
+        print(heroe)
+"""
+
+"""
+2.3. Crear una función para ordenar héroes por alguna de las claves
+númericas (altura, peso y fuerza). Preguntar al usuario si lo quiere
+ordenar de manera ascendente (‘asc’) o descendente (‘desc’) (reutilizar
+funciones anteriores dependiendo del caso)
+"""
+def ordenar_heroes_por_clave(lista_superheroes, clave_orden):
+    try:
+        # Verificar si la clave de orden existe en al menos un héroe
+        if clave_orden not in lista_superheroes[0]:
+            print(f"La clave de orden '{clave_orden}' no existe en los datos de los superhéroes.")
+            return None
+
+        # Preguntar al usuario si quiere ordenar de manera ascendente ('asc') o descendente ('desc')
+        orden = input("¿Cómo quieres ordenar los héroes? ('1' para ascendente, '2' para descendente): ")
+        if orden not in ['1', '2']:
+            print("Opción no válida. Debes elegir '1' o '2'.")
+            return None
+
+        # Llamar a la función correspondiente según la elección del usuario
+        if orden == '1':
+            return ordenar_heroes_ascendentes(lista_superheroes, clave_orden)
+        elif orden == '2':
+            return ordenar_descendente(lista_superheroes, clave_orden)
+
+    except IndexError:
+        print("La lista de superhéroes está vacía.")
+        return None
+
+"""
+funcion para normalizar los datos
+"""
+def convertir_datos(lista_personajes):
+    for personaje in lista_personajes:
+        # Convertir altura y peso a float
+        personaje['altura'] = float(personaje['altura'])
+        personaje['peso'] = float(personaje['peso'])
+
+        # Convertir fuerza e inteligencia a int si no están vacíos
+        if personaje['fuerza']:
+            personaje['fuerza'] = int(personaje['fuerza'])
+
+
+    return lista_personajes
