@@ -1004,11 +1004,12 @@ archivo y sino False.
 """
 def leer_csv(nombre_archivo):
     try:
-        with open(nombre_archivo, 'r', encoding='utf-8') as file:
-            csv_reader = csv.DictReader(file)
-            lista_superheroes = [dict(fila) for fila in csv_reader]
+        with open(nombre_archivo, 'r') as archivo_csv:
+            lector_csv = csv.reader(archivo_csv)
 
-        return lista_superheroes
+            # Itera sobre cada fila e imprime los elementos
+            for fila in lector_csv:
+                print(fila)
 
     except FileNotFoundError:
         print(f"El archivo {nombre_archivo} no fue encontrado.")
@@ -1061,7 +1062,7 @@ def leer_json(nombre_archivo, nombre_lista):
             datos = json.load(file)
 
             if nombre_lista in datos:
-                return datos[nombre_lista]
+                print(f"Contenido de {nombre_lista}: {datos[nombre_lista]}")
             else:
                 print(f"La clave {nombre_lista} no existe en el archivo JSON.")
                 return False
@@ -1071,7 +1072,6 @@ def leer_json(nombre_archivo, nombre_lista):
     except Exception as e:
         print(f"Error al leer el archivo JSON: {e}")
         return False
-
 """
 2.1. Crear una función para ordenar héroes por alguna de las claves
 númericas (altura, peso y fuerza) de manera ascendente
