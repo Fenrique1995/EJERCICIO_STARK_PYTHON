@@ -1,18 +1,6 @@
 {
     "Heroes_fuerza": [
         {
-            "nombre": "Howard the Duck",
-            "identidad": "Howard (Last name unrevealed)",
-            "empresa": "Marvel Comics",
-            "altura": 79.35,
-            "peso": 18.45,
-            "genero": "M",
-            "color_ojos": "Brown",
-            "color_pelo": "Yellow",
-            "fuerza": 2,
-            "inteligencia": ""
-        },
-        {
             "nombre": "Hawkeye",
             "identidad": "Clint Barton",
             "empresa": "Marvel Comics",
@@ -23,6 +11,18 @@
             "color_pelo": "Blond",
             "fuerza": 2,
             "inteligencia": "average"
+        },
+        {
+            "nombre": "Howard the Duck",
+            "identidad": "Howard (Last name unrevealed)",
+            "empresa": "Marvel Comics",
+            "altura": 79.35,
+            "peso": 18.45,
+            "genero": "M",
+            "color_ojos": "Brown",
+            "color_pelo": "Yellow",
+            "fuerza": 2,
+            "inteligencia": ""
         },
         {
             "nombre": "Rocket Raccoon",
@@ -46,6 +46,30 @@
             "color_ojos": "Blue",
             "color_pelo": "White",
             "fuerza": 10,
+            "inteligencia": "good"
+        },
+        {
+            "nombre": "Nick Fury",
+            "identidad": "Nicholas Joseph Fury",
+            "empresa": "Marvel Comics",
+            "altura": 185.88,
+            "peso": 99.28,
+            "genero": "M",
+            "color_ojos": "Brown",
+            "color_pelo": "Brown / White",
+            "fuerza": 15,
+            "inteligencia": "good"
+        },
+        {
+            "nombre": "Daredevil",
+            "identidad": "Matt Murdock",
+            "empresa": "Marvel Comics",
+            "altura": 183.68,
+            "peso": 90.45,
+            "genero": "M",
+            "color_ojos": "Blue",
+            "color_pelo": "Red",
+            "fuerza": 15,
             "inteligencia": "good"
         },
         {
@@ -73,27 +97,15 @@
             "inteligencia": "good"
         },
         {
-            "nombre": "Daredevil",
-            "identidad": "Matt Murdock",
+            "nombre": "Captain America",
+            "identidad": "Steve Rogers",
             "empresa": "Marvel Comics",
-            "altura": 183.68,
-            "peso": 90.45,
+            "altura": 188.01,
+            "peso": 108.94,
             "genero": "M",
-            "color_ojos": "Blue",
-            "color_pelo": "Red",
-            "fuerza": 15,
-            "inteligencia": "good"
-        },
-        {
-            "nombre": "Nick Fury",
-            "identidad": "Nicholas Joseph Fury",
-            "empresa": "Marvel Comics",
-            "altura": 185.88,
-            "peso": 99.28,
-            "genero": "M",
-            "color_ojos": "Brown",
-            "color_pelo": "Brown / White",
-            "fuerza": 15,
+            "color_ojos": "blue",
+            "color_pelo": "blond",
+            "fuerza": 20,
             "inteligencia": "good"
         },
         {
@@ -117,18 +129,6 @@
             "genero": "M",
             "color_ojos": "Blue",
             "color_pelo": "Blond",
-            "fuerza": 20,
-            "inteligencia": "good"
-        },
-        {
-            "nombre": "Captain America",
-            "identidad": "Steve Rogers",
-            "empresa": "Marvel Comics",
-            "altura": 188.01,
-            "peso": 108.94,
-            "genero": "M",
-            "color_ojos": "blue",
-            "color_pelo": "blond",
             "fuerza": 20,
             "inteligencia": "good"
         },
@@ -169,18 +169,6 @@
             "inteligencia": "good"
         },
         {
-            "nombre": "Spider-Man",
-            "identidad": "Peter Parker",
-            "empresa": "Marvel Comics",
-            "altura": 178.28,
-            "peso": 74.25,
-            "genero": "M",
-            "color_ojos": "Hazel",
-            "color_pelo": "Brown",
-            "fuerza": 55,
-            "inteligencia": "high"
-        },
-        {
             "nombre": "Ghost Rider",
             "identidad": "Johnny Blaze",
             "empresa": "Marvel Comics",
@@ -191,6 +179,18 @@
             "color_pelo": "No Hair",
             "fuerza": 55,
             "inteligencia": "average"
+        },
+        {
+            "nombre": "Spider-Man",
+            "identidad": "Peter Parker",
+            "empresa": "Marvel Comics",
+            "altura": 178.28,
+            "peso": 74.25,
+            "genero": "M",
+            "color_ojos": "Hazel",
+            "color_pelo": "Brown",
+            "fuerza": 55,
+            "inteligencia": "high"
         },
         {
             "nombre": "Drax the Destroyer",
@@ -205,13 +205,13 @@
             "inteligencia": "average"
         },
         {
-            "nombre": "Gamora",
-            "identidad": "Gamora Zen Whoberi Ben Titan",
+            "nombre": "Colossus",
+            "identidad": "Piotr Nikolaievitch Rasputin",
             "empresa": "Marvel Comics",
-            "altura": 183.65,
-            "peso": 77.77,
+            "altura": 226.13,
+            "peso": 225.52,
             "genero": "NB",
-            "color_ojos": "Yellow",
+            "color_ojos": "Silver",
             "color_pelo": "Black",
             "fuerza": 85,
             "inteligencia": "good"
@@ -229,13 +229,25 @@
             "inteligencia": "good"
         },
         {
-            "nombre": "Colossus",
-            "identidad": "Piotr Nikolaievitch Rasputin",
+            "nombre": "Iron Man",
+            "identidad": "Tony Stark",
             "empresa": "Marvel Comics",
-            "altura": 226.13,
-            "peso": 225.52,
+            "altura": 198.91,
+            "peso": 191.88,
+            "genero": "M",
+            "color_ojos": "Blue",
+            "color_pelo": "Black",
+            "fuerza": 85,
+            "inteligencia": "high"
+        },
+        {
+            "nombre": "Gamora",
+            "identidad": "Gamora Zen Whoberi Ben Titan",
+            "empresa": "Marvel Comics",
+            "altura": 183.65,
+            "peso": 77.77,
             "genero": "NB",
-            "color_ojos": "Silver",
+            "color_ojos": "Yellow",
             "color_pelo": "Black",
             "fuerza": 85,
             "inteligencia": "good"
@@ -253,15 +265,15 @@
             "inteligencia": "good"
         },
         {
-            "nombre": "Iron Man",
-            "identidad": "Tony Stark",
+            "nombre": "Hulk",
+            "identidad": "Bruce Banner",
             "empresa": "Marvel Comics",
-            "altura": 198.91,
-            "peso": 191.88,
+            "altura": 244.4,
+            "peso": 630.9,
             "genero": "M",
-            "color_ojos": "Blue",
-            "color_pelo": "Black",
-            "fuerza": 85,
+            "color_ojos": "Green",
+            "color_pelo": "Green",
+            "fuerza": 100,
             "inteligencia": "high"
         },
         {
@@ -275,18 +287,6 @@
             "color_pelo": "Blond",
             "fuerza": 100,
             "inteligencia": "good"
-        },
-        {
-            "nombre": "Hulk",
-            "identidad": "Bruce Banner",
-            "empresa": "Marvel Comics",
-            "altura": 244.4,
-            "peso": 630.9,
-            "genero": "M",
-            "color_ojos": "Green",
-            "color_pelo": "Green",
-            "fuerza": 100,
-            "inteligencia": "high"
         }
     ]
 }
