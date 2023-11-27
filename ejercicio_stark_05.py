@@ -19,7 +19,7 @@ try:
     menu = int(input('1-Normalizar datos (No debe dejar de entrar a las otras opciones) \n2-Generar CSV (Guardar la lista generada en otra variable)\n3-Listar heroes del archivo CSV ordenados por altura ASC (Validar si el mismo existe)\n4-Generar JSON (Guardar la lista generada en otra variable)\n5-Listar heroes del archivo JSON ordenados por peso DESC (Validar si el mismo existe)\n6-Ordenar Lista por fuerza (Se le tiene que preguntar al usuario si ordenar de manera ASC o DESC\n7 - Salir\n'))
 except ValueError:
     print("Entrada inválida. Debe ingresar un número.")
-    menu = int(input('Ingrese nuevamente: '))
+    menu = int(input('Debe ingresar 1:\n'))
 while True:
     try:
         while menu != 1:
@@ -51,4 +51,4 @@ while True:
                     print("comando invalido")
     except ValueError:
         print("Entrada inválida. Debe ingresar un número.")
-        menu = int(input('Ingrese nuevamente: '))
+        menu = int(input('Debe ingresar 1:\n'))
